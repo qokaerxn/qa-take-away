@@ -14,6 +14,11 @@ import java.util.Map;
 @Mapper
 public interface OrdersMapper {
 
+    /**
+     * 分页查询
+     * @param ordersPageQueryDTO
+     * @return
+     */
     Page<Orders> pageQuery(OrdersPageQueryDTO ordersPageQueryDTO);
 
     /**
@@ -47,4 +52,12 @@ public interface OrdersMapper {
     Integer countByMap(Map map);
 
     List<GoodsSalesDTO> getTop10Orders(LocalDateTime beginTime,LocalDateTime endTime);
+
+    /**
+     * 根据状态查询订单数
+     * @param status
+     * @return
+     */
+    @Select("select count(id) from orders where status = #{status}")
+    Integer getByStatus(Integer status);
 }

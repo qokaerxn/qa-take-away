@@ -22,10 +22,11 @@ import java.time.LocalDateTime;
 public class AutoFillAspect {
 
     @Pointcut("execution(* com.qokaerxn.mapper.*.*(..)) && @annotation(com.qokaerxn.annotation.AutoFill)")
-    public void autoFillPointCut(){}
+    public void autoFillPointCut() {
+    }
 
     @Before("autoFillPointCut()")
-    public void autoFill(JoinPoint joinPoint){
+    public void autoFill(JoinPoint joinPoint) {
 
         //获取当前被拦截对象的方法的数据库操作类型
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();//获得方法签名对象
@@ -35,7 +36,7 @@ public class AutoFillAspect {
         //获取参数
         Object[] args = joinPoint.getArgs();
 
-        if(args.length == 0 || args == null){
+        if (args.length == 0 || args == null) {
             return;
         }
 
@@ -45,8 +46,8 @@ public class AutoFillAspect {
         LocalDateTime now = LocalDateTime.now();
         Long currentId = BaseContext.getCurrentId();
 
-        if(operationType == OperationType.INSERT){
-            try{
+        if (operationType == OperationType.INSERT) {
+            try {
                 //获取需要赋值的属性的setter方法
                 Method setCreateTime = entity.getClass().getDeclaredMethod(AutoFillConstant.SET_CREATE_TIME, LocalDateTime.class);
                 Method setCreateUser = entity.getClass().getDeclaredMethod(AutoFillConstant.SET_CREATE_USER, Long.class);
@@ -54,11 +55,11 @@ public class AutoFillAspect {
                 Method setUpdateUser = entity.getClass().getDeclaredMethod(AutoFillConstant.SET_UPDATE_USER, Long.class);
 
                 //通过反射将值赋给属性
-                setCreateTime.invoke(entity,now);
-                setCreateUser.invoke(entity,currentId);
-                setUpdateTime.invoke(entity,now);
-                setUpdateUser.invoke(entity,currentId);
-            }catch (Exception e){
+                setCreateTime.invoke(entity, now);
+                setCreateUser.invoke(entity, currentId);
+                setUpdateTime.invoke(entity, now);
+                setUpdateUser.invoke(entity, currentId);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         } else if (operationType == OperationType.UPDATE) {
@@ -66,9 +67,9 @@ public class AutoFillAspect {
                 Method setUpdateUser = entity.getClass().getDeclaredMethod(AutoFillConstant.SET_UPDATE_USER, Long.class);
                 Method setUpdateTime = entity.getClass().getDeclaredMethod(AutoFillConstant.SET_UPDATE_TIME, LocalDateTime.class);
 
-                setUpdateUser.invoke(entity,currentId);
-                setUpdateTime.invoke(entity,now);
-            }catch (Exception e){
+                setUpdateUser.invoke(entity, currentId);
+                setUpdateTime.invoke(entity, now);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

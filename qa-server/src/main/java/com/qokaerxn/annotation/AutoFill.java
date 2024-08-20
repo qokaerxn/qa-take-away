@@ -1,6 +1,5 @@
 package com.qokaerxn.annotation;
 
-
 import com.qokaerxn.enumeration.OperationType;
 
 import java.lang.annotation.ElementType;
