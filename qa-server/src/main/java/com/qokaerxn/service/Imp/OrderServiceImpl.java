@@ -364,10 +364,9 @@ public class OrderServiceImpl implements OrderService {
      * @param ordersConfirmDTO
      */
     public void confirm(OrdersConfirmDTO ordersConfirmDTO) {
-        Orders orders = Orders.builder()
-                .id(ordersConfirmDTO.getId())
-                .status(ordersConfirmDTO.getStatus())
-                .build();
+        Orders orders = new Orders();
+        orders.setId(ordersConfirmDTO.getId());
+        orders.setStatus(Orders.CONFIRMED);
 
         ordersMapper.update(orders);
     }
@@ -452,7 +451,7 @@ public class OrderServiceImpl implements OrderService {
         //修改订单状态
         Orders orders = new Orders();
         orders.setId(ordersDB.getId());
-        ordersDB.setStatus(Orders.DELIVERY_IN_PROGRESS);
+        orders.setStatus(Orders.DELIVERY_IN_PROGRESS);
 
         ordersMapper.update(orders);
 
